@@ -1,0 +1,9 @@
+canvas{
+    margin-left: 500px;
+    margin-top: 50px;
+}
+body{
+    background-image: url("../img/hogwarts.jpg");
+    /*background-size:cover;*/
+    background-size:50%
+}

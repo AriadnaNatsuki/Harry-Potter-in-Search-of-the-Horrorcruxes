@@ -5,6 +5,8 @@ class Harry {
         this.y = y
         this.vx = 2
         this.vy = 2
+        //this.width = 0
+        //this.height=0
         //rgb(88,121,90) 
         this.movements = {
             right: false,
@@ -12,21 +14,34 @@ class Harry {
             up: false,
             down: false
         }
+        const fountain = new Audio('../sounds/fountain.wav')
+        this.sound = {
+            fountain
+        }
+        
         this.sprite = new Image()
         this.sprite.src = '../img/harry_walking.png'
         this.sprite.isReady = false
-        //9 columnas, 2 filas
-        this.sprite.horizontalFrames = 2
-        this.sprite.verticalFrames = 9
+        //this.scale=0.5
+        //En horizontal tengo 9 sprites (9 columnas) y en vertical 2 (2 filas)
+        this.sprite.horizontalFrames = 9
+        this.sprite.verticalFrames = 2
         //Posicion sprite por defecto al inicio del juego
         this.sprite.horizontalFrameIndex = 0
         this.sprite.verticalFrameIndex = 0
-        //El ancho de la foto lo adquiere por defecto sin tener que hacer nosotros nada
-        //De tal forma que si accedemos a la propiedad width nos lo dara
-        //Para imprimir el correspondiente a 1 sprite, divide el ancho de la foto entre el numero de sprites por columna y
-        //luego el alto entre el numero de sprite por fila, de esta manera lo sacamos en cuadriculas
-        this.sprite.frameWidth = Math.floor(this.sprite.width / this.sprite.horizontalFrames)
-        this.sprite.frameWidth = Math.floor(this.sprite.height / this.sprite.verticalFrames)
+        this.sprite.drawCount = 0
+        this.sprite.onload = () => {
+            this.sprite.isReady = true
+            //El ancho de la foto lo adquiere por defecto sin tener que hacer nosotros nada
+            //De tal forma que si accedemos a la propiedad width nos lo dara
+            //Para imprimir el correspondiente a 1 sprite, divide el ancho de la foto entre el numero de sprites por columna y
+            //luego el alto entre el numero de sprite por fila, de esta manera lo sacamos en cuadriculas
+            this.sprite.frameWidth = Math.floor(this.sprite.width / this.sprite.horizontalFrames)
+            this.sprite.frameHeight = Math.floor(this.sprite.height / this.sprite.verticalFrames)
+            this.width = this.sprite.frameWidth
+            this.height = this.sprite.frameHeight
+
+        }
 
 
 
@@ -36,7 +51,16 @@ class Harry {
     }
     draw() {
         if (this.isReady()) {
-            this.ctx.drawImage(this.sprite, this.x, this.y, this.width, this.height)
+            this.ctx.drawImage(this.sprite,
+                this.sprite.horizontalFrameIndex * this.sprite.frameWidth,
+                this.sprite.verticalFrameIndex * this.sprite.frameHeight,
+                this.sprite.frameWidth,
+                this.sprite.frameHeight,
+                this.x,
+                this.y,
+                this.width,
+                this.height
+                )
         }
     }
     move() {
@@ -52,6 +76,11 @@ class Harry {
             this.y -= this.vy
         } else {
             this.y += this.vy
+        }
+    }
+    sound() {
+        if ((this.y > 250 || this.y < 350) && (this.x > 400 || this.y < 540)) {
+            fountain.play()
         }
     }
     onkeyEvent(event) {

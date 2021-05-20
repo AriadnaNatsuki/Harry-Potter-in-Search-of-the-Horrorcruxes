@@ -2,10 +2,11 @@ class Game {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId)
         this.ctx = this.canvas.getContext('2d')
+        //Creamos atributo background, haciendo instancia de la clase Background
         this.background = new Background(this.ctx)
-        this.harry=new Harry(this.ctx,400,400)
-        this.canvas.width = 1000
-        this.canvas.height = 1000
+        this.harry = new Harry(this.ctx, 475, 400)
+        this.canvas.width = 877
+        this.canvas.height = 959
         //Renderizacion
         this.FPS = 1000 / 60
         //this.drawInterval=undefined
@@ -20,6 +21,7 @@ class Game {
         //  theme
         // }
     }
+
     start() {
         // if (!this.drawInterval) {
         //  this.drawInterval = setInterval(() => {

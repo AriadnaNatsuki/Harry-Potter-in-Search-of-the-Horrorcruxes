@@ -8,7 +8,7 @@ class Background {
         this.height = this.ctx.canvas.height
 
         this.img = new Image()
-        this.img.src = '../img/laberinto.jpg'
+        this.img.src = '../img/maze_lines.jpg'
 
         this.img.isReady = false
         this.img.onload = () => {

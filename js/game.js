@@ -4,12 +4,13 @@ class Game {
         this.ctx = this.canvas.getContext('2d')
         //Creamos atributo background, haciendo instancia de la clase Background
         this.background = new Background(this.ctx)
-        this.harry = new Harry(this.ctx, 475, 400)
+        //this.harry = new Harry(this.ctx, 480,440)
+        this.harry = new Harry(this.ctx,664,335)
         this.canvas.width = 877
         this.canvas.height = 959
         //Renderizacion
         this.FPS = 1000 / 60
-        //this.drawInterval=undefined
+        this.drawInterval = undefined
         const theme = new Audio("../sounds/Harry Potter Theme Song.mp3")
         //theme.addEventListener("canplay", event => {
         /* the audio is now playable; play it if permissions allow */
@@ -23,15 +24,14 @@ class Game {
     }
 
     start() {
-        // if (!this.drawInterval) {
-        //  this.drawInterval = setInterval(() => {
-
-        this.interval = setInterval(() => {
-            //   this.sounds.theme.play()
-            this.clear()
-            this.draw()
-        }, this.FPS)
-
+        if (!this.drawInterval) {
+            this.drawInterval = setInterval(() => {
+                //   this.sounds.theme.play()
+                this.clear() 
+                this.move()
+                this.draw()
+            }, this.FPS)
+        }
     }
     clear() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
@@ -39,8 +39,13 @@ class Game {
     draw() {
         this.background.draw()
         this.harry.draw()
+        //this.ctx.save()
+    }
+    onKeyEvent(event) {
+        this.harry.onKeyEvent(event)
     }
     move() {
-        //this.harry.move()
+        this.harry.move()
     }
+
 }

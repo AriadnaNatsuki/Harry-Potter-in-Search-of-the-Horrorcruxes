@@ -3,8 +3,11 @@ class Harry {
         this.ctx = ctx
         this.x = x
         this.y = y
-        this.vx = 2
-        this.vy = 2
+        this.vx = 0
+        this.vy = 0
+        this.maxX = this.ctx.canvas.width
+        this.maxY = this.ctx.canvas.height
+
         //this.width = 0
         //this.height=0
         //rgb(88,121,90) 
@@ -12,13 +15,14 @@ class Harry {
             right: false,
             left: false,
             up: false,
-            down: false
+            down: false,
+            fire: false
         }
-        const fountain = new Audio('../sounds/fountain.wav')
-        this.sound = {
-            fountain
-        }
-        
+        // const fountain = new Audio('../sounds/fountain.wav')
+        //this.sound = {
+        //  fountain
+        //}
+
         this.sprite = new Image()
         this.sprite.src = '../img/harry_walking.png'
         this.sprite.isReady = false
@@ -60,48 +64,150 @@ class Harry {
                 this.y,
                 this.width,
                 this.height
-                )
+            )
+        } this.sprite.drawCount++
+        this.animate()
+    }
+    onKeyEvent(event) {
+        const status = event.type === 'keydown'
+        switch (event.keyCode) {
+            //Si presionamos la tecla UP esta obtendra valor keydown (true)
+            case KEY_RIGHT:
+                this.movements.right = status
+                // console.log("true right")
+                break;
+            case KEY_LEFT:
+                this.movements.left = status
+                //  console.log("true left")
+                break;
+            case KEY_UP:
+                this.movements.up = status
+                break;
+            case KEY_DOWN:
+                this.movements.down = status
+                break;
+            case KEY_FIRE:
+                this.movements.fire = status
+                break;
+
         }
     }
     move() {
+
+
         //condicion que afecta a todas las sentencias
         //si el sprite toca por algun stio el color negro del laberinto se pare if (getImageData)
         //this.vx=0
         if (this.movements.right) {
-            this.x += this.vx
+            this.vx = SPEED
 
         } else if (this.movements.left) {
-            this.x -= this.vx
+            this.vx = -SPEED
         } else if (this.movements.up) {
-            this.y -= this.vy
+            this.vy = -SPEED
+        } else if (this.movements.down) {
+            this.vy = SPEED
         } else {
-            this.y += this.vy
+            this.vx = 0
+            this.vy = 0
+        }
+        //checkColisionWall()
+        this.x += this.vx
+        // console.log(this.x)
+        this.y += this.vy
+        //Restriccion para no salirse del canvas
+        //Ancho de 1 sprite (aprox 33 px)
+        if (this.x >= this.maxX) {
+            this.x = this.maxX - 33
+        } else if (this.x <= 0) {
+            this.x = 0
+        }
+        //Alto de 1 sprite (aprox 72)
+        if (this.y >= this.maxY) {
+            this.y = this.maxY - 80
+        } else if (this.y <= 0) {
+            this.y = 0
         }
     }
-    sound() {
+    animate() {
+        if (this.movements.right) {
+            //  this.animateSprite("right")
+            this.sprite.verticalFrameIndex = 1
+            if ((this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
+                this.sprite.horizontalFrameIndex = 1
+            } else {
+                this.sprite.horizontalFrameIndex++
+            }
+
+            // this.animateSprite()
+        } else if (this.movements.left) {
+            this.sprite.verticalFrameIndex = 0
+            if ((this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
+                this.sprite.horizontalFrameIndex = 0
+            } else {
+                this.sprite.horizontalFrameIndex++
+            }
+        }
+        //  this.animateSprite()
+        else {
+            //this.resetAnimation()
+        }
+
+    }
+    resetAnimation() {
+        this.sprite.horizontalFrameIndex = 0
+        this.sprite.verticalFrameIndex = 1
+    }
+    animateSprite() {
+        //Reseteamos la posicion del sprite
+        //  if (this.sprite.verticalFrameIndex != 0) {
+        //     this.resetAnimation()
+        //  }  
+        //Estoy en un frame que le toca cambio de foto
+        if (this.sprite.drawCount & MOVEMENT_FRAMES === 0) {
+            //Sprites derecha, horizontalFrameIndex=1
+            // if (value === "right") {
+            if (this.movements.right) {
+                console.log("right");
+                //Si incremento más de los sprites que tengo por fila, vuelve al inicio o si al recibir value derecha esta en otra columna
+                //o si empiezo a recorrerlo en la fila equivocada
+                if ((this.sprite.verticalFrameIndex != 1) || (this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
+                    this.sprite.horizontalFrameIndex = 1
+                } else {
+                    //Recorro toda la fila
+                    this.sprite.horizontalFrameIndex++
+                }
+
+
+            } else if (this.movements.left) {
+                //Si incremento más de los sprites que tengo por fila, vuelve al inicio o si al recibir value derecha esta en otra columna
+                //o si empiezo a recorrerlo en la fila equivocada
+                if ((this.sprite.verticalFrameIndex != 0) || (this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
+                    this.sprite.horizontalFrameIndex = 0
+                } else {
+                    //Recorro toda la fila
+                    this.sprite.horizontalFrameIndex++
+                }
+
+            } this.drawCount = 0
+        }
+    }
+    /**sound() {
         if ((this.y > 250 || this.y < 350) && (this.x > 400 || this.y < 540)) {
             fountain.play()
         }
+    } */
+    spritePosition() {
+        const position = []
+        position.push(this.x)
+        position.push(this.y)
     }
-    onkeyEvent(event) {
-        const status = event.type == 'keydown'
-        switch (event.keyCode) {
-            //Si presionamos la tecla UP esta obtendra valor keydown (true)
-            case KEY_RIGHT:
-                this.movement.right = status
-                break
-            case KEY_LEFT:
-                this.movement.left = status
-                break
-            case KEY_UP:
-                this.movement.up = status
-                break
-            case KEY_DOWN:
-                this.movement.down = status
-                break
-            case KEY_FIRE:
-                this.movement.right = status
-                break
+    checkColisionWall() {
+        wall.forEach(coordenate =>
+            if (position === coordenate) {
+
         }
-    }
+        }
+
+
 }

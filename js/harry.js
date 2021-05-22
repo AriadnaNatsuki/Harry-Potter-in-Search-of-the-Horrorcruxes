@@ -117,14 +117,14 @@ class Harry {
         this.y += this.vy
         //Restriccion para no salirse del canvas
         //Ancho de 1 sprite (aprox 33 px)
-        if (this.x >= this.maxX) {
-            this.x = this.maxX - 33
+        if (this.x >= this.maxX-this.sprite.frameWidth) {
+            this.x = this.maxX - this.sprite.frameWidth
         } else if (this.x <= 0) {
             this.x = 0
         }
         //Alto de 1 sprite (aprox 72)
-        if (this.y >= this.maxY) {
-            this.y = this.maxY - 80
+        if (this.y >= this.maxY-this.sprite.frameHeight) {
+            this.y = this.maxY - this.sprite.frameHeight
         } else if (this.y <= 0) {
             this.y = 0
         }
@@ -164,50 +164,50 @@ class Harry {
         //     this.resetAnimation()
         //  }  
         //Estoy en un frame que le toca cambio de foto
-        if (this.sprite.drawCount & MOVEMENT_FRAMES === 0) {
+       // if (this.sprite.drawCount & MOVEMENT_FRAMES === 0) {
             //Sprites derecha, horizontalFrameIndex=1
             // if (value === "right") {
-            if (this.movements.right) {
-                console.log("right");
+         //   if (this.movements.right) {
+            //    console.log("right");
                 //Si incremento más de los sprites que tengo por fila, vuelve al inicio o si al recibir value derecha esta en otra columna
                 //o si empiezo a recorrerlo en la fila equivocada
-                if ((this.sprite.verticalFrameIndex != 1) || (this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
-                    this.sprite.horizontalFrameIndex = 1
-                } else {
+               // if ((this.sprite.verticalFrameIndex != 1) || (this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
+                   // this.sprite.horizontalFrameIndex = 1
+               // } else {
                     //Recorro toda la fila
-                    this.sprite.horizontalFrameIndex++
-                }
+                   // this.sprite.horizontalFrameIndex++
+              //  }
 
 
-            } else if (this.movements.left) {
+            //} else if (this.movements.left) {
                 //Si incremento más de los sprites que tengo por fila, vuelve al inicio o si al recibir value derecha esta en otra columna
                 //o si empiezo a recorrerlo en la fila equivocada
-                if ((this.sprite.verticalFrameIndex != 0) || (this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
-                    this.sprite.horizontalFrameIndex = 0
-                } else {
+             //   if ((this.sprite.verticalFrameIndex != 0) || (this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
+                 //   this.sprite.horizontalFrameIndex = 0
+              //  } else {
                     //Recorro toda la fila
-                    this.sprite.horizontalFrameIndex++
-                }
+                  //  this.sprite.horizontalFrameIndex++
+               // }
 
-            } this.drawCount = 0
-        }
-    }
+           // } this.drawCount = 0
+      //  }
+   // }
     /**sound() {
         if ((this.y > 250 || this.y < 350) && (this.x > 400 || this.y < 540)) {
             fountain.play()
         }
     } */
-    spritePosition() {
-        const position = []
-        position.push(this.x)
-        position.push(this.y)
-    }
-    checkColisionWall() {
-        wall.forEach(coordenate =>
-            if (position === coordenate) {
+   // spritePosition() {
+     //   const position = []
+       // position.push(this.x)
+        //position.push(this.y)
+    //}
+    //checkColisionWall() {
+     //   wall.forEach(coordenate =>
+       //     if (position === coordenate) {
 
-        }
-        }
-
+      //  }
+ }
+//
 
 }

@@ -8,7 +8,7 @@ class Background {
         this.height = this.ctx.canvas.height
 
         this.img = new Image()
-        this.img.src = '../img/maze_lines.jpg'
+        this.img.src = './img/laberinto.jpg'
 
         this.img.isReady = false
         this.img.onload = () => {
@@ -23,5 +23,6 @@ class Background {
         if (this.isReady()) {
             this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
         }
+      //  wall.forEach(element=>this.ctx.fillRect(element[0],element[1],1,1))
     }
 }

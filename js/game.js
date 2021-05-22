@@ -4,7 +4,9 @@ class Game {
         this.ctx = this.canvas.getContext('2d')
         //Creamos atributo background, haciendo instancia de la clase Background
         this.background = new Background(this.ctx)
-        this.harry = new Harry(this.ctx, 480, 440)
+        this.harry = new Harry(this.ctx, 805, 71)
+        this.horrocruxes = HORROCRUXES.map(
+            horrocrux => new Horrocrux(this.ctx, horrocrux.name, horrocrux.image, horrocrux.position))
         //  this.harry = new Harry(this.ctx,664,335)
         this.canvas.width = 877
         this.canvas.height = 959
@@ -39,6 +41,7 @@ class Game {
     draw() {
         this.background.draw()
         this.harry.draw()
+        this.horrocruxes.forEach(element => element.draw())
         //this.ctx.save()
     }
     onKeyEvent(event) {

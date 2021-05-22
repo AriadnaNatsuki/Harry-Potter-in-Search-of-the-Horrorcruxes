@@ -24,7 +24,7 @@ class Harry {
         //}
 
         this.sprite = new Image()
-        this.sprite.src = '../img/harry_walking.png'
+        this.sprite.src = './img/harry_walking.png'
         this.sprite.isReady = false
         //this.scale=0.5
         //En horizontal tengo 9 sprites (9 columnas) y en vertical 2 (2 filas)
@@ -98,34 +98,44 @@ class Harry {
         //condicion que afecta a todas las sentencias
         //si el sprite toca por algun stio el color negro del laberinto se pare if (getImageData)
         //this.vx=0
-        if (this.movements.right) {
-            this.vx = SPEED
-
-        } else if (this.movements.left) {
-            this.vx = -SPEED
-        } else if (this.movements.up) {
-            this.vy = -SPEED
-        } else if (this.movements.down) {
-            this.vy = SPEED
-        } else {
+        
+            if (this.movements.right) {
+                this.vx = SPEED
+            } else if (this.movements.left) {
+                this.vx = -SPEED
+            } else if (this.movements.up) {
+                this.vy = -SPEED
+            } else if (this.movements.down) {
+                this.vy = SPEED
+            } else {
+                this.vx = 0
+                this.vy = 0
+            }
+       
+        if (this.checkColisionWall()) {
+            //checkColisionWall()
             this.vx = 0
             this.vy = 0
         }
-        //checkColisionWall()
         this.x += this.vx
         // console.log(this.x)
         this.y += this.vy
         //Restriccion para no salirse del canvas
         //Ancho de 1 sprite (aprox 33 px)
-        if (this.x >= this.maxX-this.sprite.frameWidth) {
+        if (this.x >= this.maxX - this.sprite.frameWidth) {
             this.x = this.maxX - this.sprite.frameWidth
         } else if (this.x <= 0) {
             this.x = 0
         }
         //Alto de 1 sprite (aprox 72)
-        if (this.y >= this.maxY-this.sprite.frameHeight) {
+        if (this.y >= this.maxY - this.sprite.frameHeight) {
             this.y = this.maxY - this.sprite.frameHeight
         } else if (this.y <= 0) {
+            //this.y=0
+            //He tenido que permitir que se le corte un poco la cabeza
+            //para no bajar la linea del muro que entraba en conflicto al no
+            //permitirle entrar por los corredores superiores
+
             this.y = 0
         }
     }
@@ -158,56 +168,66 @@ class Harry {
         this.sprite.horizontalFrameIndex = 0
         this.sprite.verticalFrameIndex = 1
     }
-    animateSprite() {
-        //Reseteamos la posicion del sprite
-        //  if (this.sprite.verticalFrameIndex != 0) {
-        //     this.resetAnimation()
-        //  }  
-        //Estoy en un frame que le toca cambio de foto
-       // if (this.sprite.drawCount & MOVEMENT_FRAMES === 0) {
-            //Sprites derecha, horizontalFrameIndex=1
-            // if (value === "right") {
-         //   if (this.movements.right) {
-            //    console.log("right");
-                //Si incremento más de los sprites que tengo por fila, vuelve al inicio o si al recibir value derecha esta en otra columna
-                //o si empiezo a recorrerlo en la fila equivocada
-               // if ((this.sprite.verticalFrameIndex != 1) || (this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
-                   // this.sprite.horizontalFrameIndex = 1
-               // } else {
-                    //Recorro toda la fila
-                   // this.sprite.horizontalFrameIndex++
-              //  }
+    //animateSprite() {
+    //Reseteamos la posicion del sprite
+    //  if (this.sprite.verticalFrameIndex != 0) {
+    //     this.resetAnimation()
+    //  }  
+    //Estoy en un frame que le toca cambio de foto
+    // if (this.sprite.drawCount & MOVEMENT_FRAMES === 0) {
+    //Sprites derecha, horizontalFrameIndex=1
+    // if (value === "right") {
+    //   if (this.movements.right) {
+    //    console.log("right");
+    //Si incremento más de los sprites que tengo por fila, vuelve al inicio o si al recibir value derecha esta en otra columna
+    //o si empiezo a recorrerlo en la fila equivocada
+    // if ((this.sprite.verticalFrameIndex != 1) || (this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
+    // this.sprite.horizontalFrameIndex = 1
+    // } else {
+    //Recorro toda la fila
+    // this.sprite.horizontalFrameIndex++
+    //  }
 
 
-            //} else if (this.movements.left) {
-                //Si incremento más de los sprites que tengo por fila, vuelve al inicio o si al recibir value derecha esta en otra columna
-                //o si empiezo a recorrerlo en la fila equivocada
-             //   if ((this.sprite.verticalFrameIndex != 0) || (this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
-                 //   this.sprite.horizontalFrameIndex = 0
-              //  } else {
-                    //Recorro toda la fila
-                  //  this.sprite.horizontalFrameIndex++
-               // }
+    //} else if (this.movements.left) {
+    //Si incremento más de los sprites que tengo por fila, vuelve al inicio o si al recibir value derecha esta en otra columna
+    //o si empiezo a recorrerlo en la fila equivocada
+    //   if ((this.sprite.verticalFrameIndex != 0) || (this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
+    //   this.sprite.horizontalFrameIndex = 0
+    //  } else {
+    //Recorro toda la fila
+    //  this.sprite.horizontalFrameIndex++
+    // }
 
-           // } this.drawCount = 0
-      //  }
-   // }
+    // } this.drawCount = 0
+    //  }
+    // }
     /**sound() {
         if ((this.y > 250 || this.y < 350) && (this.x > 400 || this.y < 540)) {
             fountain.play()
         }
     } */
-   // spritePosition() {
-     //   const position = []
-       // position.push(this.x)
-        //position.push(this.y)
-    //}
-    //checkColisionWall() {
-     //   wall.forEach(coordenate =>
-       //     if (position === coordenate) {
+    spritePosition() {
+        //Nos declaramos un array con la posicion de nuestro sprite. 
+        //Dado que por derfecto la posici
+        //this.x += this.vx
+        // console.log(this.x)
+       // this.y += this.vy
+    
+        this.positionFeetLeft = [this.x+this.vx, this.y+this.vy + this.sprite.frameHeight]
+        
+        this.positionFeetRight = [this.x+this.vx + this.sprite.frameWidth, this.y+this.vy + this.sprite.frameHeight]
+      
 
-      //  }
- }
-//
+    }
+    checkColisionWall() {
+        this.spritePosition()
+        return wall.some(coordenate => {
+            if (((this.positionFeetLeft[0] === coordenate[0]) && (this.positionFeetLeft[1] === coordenate[1])) || ((this.positionFeetRight[0] === coordenate[0]) && (this.positionFeetRight[1] === coordenate[1]))) {
+              return true
+            }
 
+        })
+    }
 }
+

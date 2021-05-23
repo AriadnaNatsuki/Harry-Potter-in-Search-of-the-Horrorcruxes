@@ -3,8 +3,9 @@ class Horrocrux {
         this.ctx = ctx;
         this.name = name;
         this.image = image;
-        this.position = position;
-        this.isReady = false
+      this.position = position;
+         //this.scale=0.5
+       // this.isReady = false
         this.width = this.ctx.canvas.width
         this.height = this.ctx.canvas.height
         this.x = this.position[0]
@@ -16,9 +17,9 @@ class Horrocrux {
     //isReady() {
         //return this.image.isReady
    // }
-    //draw() {
+    draw() {
        // if (this.isReady()) {
-      //      this.ctx.drawImage(this.imageg, this.x, this.y)
+           this.ctx.drawImage(this.image, this.x, this.y,40,40)
       //  }
-  //  }
+   }
 }

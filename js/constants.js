@@ -8,7 +8,50 @@ const MOVEMENT_FRAMES = 10
 const HORROCRUXES = [
     {
         name: "cup",
-        image: './img/horrocruxes/cup.png',
-        position: [508,601]
+        image: Object.assign(new Image, {
+            src: './img/horrocruxes/cup.png',
+
+        }),
+        position: [508, 601]
+    },
+    {
+        name: "diadem",
+        image: Object.assign(new Image, {
+            src: './img/horrocruxes/diadem.png',
+
+        }),
+        position: [120, 600]
+    },
+    {
+        name: "diary",
+        image: Object.assign(new Image, {
+            src: './img/horrocruxes/diary.png',
+
+        }),
+        position: [62, 50]
+    },
+    {
+        name: "locket",
+        image: Object.assign(new Image, {
+            src: './img/horrocruxes/locket.png',
+
+        }),
+        position: [230, 323]
+    },
+    {
+        name: "nagini",
+        image: Object.assign(new Image, {
+            src: './img/horrocruxes/nagini.png',
+
+        }),
+        position: [810, 700]
+    },
+    {
+        name: "ring",
+        image: Object.assign(new Image, {
+            src: './img/horrocruxes/ring.png',
+
+        }),
+        position: [520, 20]
     }
 ]

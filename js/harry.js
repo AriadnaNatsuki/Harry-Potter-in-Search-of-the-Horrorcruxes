@@ -229,5 +229,8 @@ class Harry {
 
         })
     }
+    catchHorrocrux() {
+        
+    }
 }
 

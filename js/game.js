@@ -85,7 +85,7 @@ class Game {
         if (this.horrocruxes.length - restHorrocruxes.length) {
             this.sounds.sparkling.play()
         }
-        if (restHorrocruxes.length === 4) {
+        if (restHorrocruxes.length ===2) {
             this.clear()
             //  this.background.draw()
         }

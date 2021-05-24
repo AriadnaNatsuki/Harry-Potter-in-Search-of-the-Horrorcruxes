@@ -2,7 +2,7 @@ window.onload = () => {
   const game = new Game('canvas')
   //let CanvasTwo = document.getElementById('canvas')
   //  CanvasTwo= 'canvasTwo'
- const battle = new Battle('canvasTwo')
+ //const battle = new Battle('canvasTwo')
   console.log("hey")
 
   //Evento que detecta cuando se pulsa una tecla

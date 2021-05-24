@@ -7,6 +7,7 @@ class Harry {
         this.vy = 0
         this.maxX = this.ctx.canvas.width
         this.maxY = this.ctx.canvas.height
+        this.fountain = new Audio('./sounds/fountain.wav')
 
         //this.width = 0
         //this.height=0
@@ -98,20 +99,20 @@ class Harry {
         //condicion que afecta a todas las sentencias
         //si el sprite toca por algun stio el color negro del laberinto se pare if (getImageData)
         //this.vx=0
-        
-            if (this.movements.right) {
-                this.vx = SPEED
-            } else if (this.movements.left) {
-                this.vx = -SPEED
-            } else if (this.movements.up) {
-                this.vy = -SPEED
-            } else if (this.movements.down) {
-                this.vy = SPEED
-            } else {
-                this.vx = 0
-                this.vy = 0
-            }
-       
+
+        if (this.movements.right) {
+            this.vx = SPEED
+        } else if (this.movements.left) {
+            this.vx = -SPEED
+        } else if (this.movements.up) {
+            this.vy = -SPEED
+        } else if (this.movements.down) {
+            this.vy = SPEED
+        } else {
+            this.vx = 0
+            this.vy = 0
+        }
+
         if (this.checkColisionWall()) {
             //checkColisionWall()
             this.vx = 0
@@ -212,25 +213,72 @@ class Harry {
         //Dado que por derfecto la posici
         //this.x += this.vx
         // console.log(this.x)
-       // this.y += this.vy
-    
-        this.positionFeetLeft = [this.x+this.vx, this.y+this.vy + this.sprite.frameHeight]
-        
-        this.positionFeetRight = [this.x+this.vx + this.sprite.frameWidth, this.y+this.vy + this.sprite.frameHeight]
-      
+        // this.y += this.vy
+
+        this.positionFeetLeft = [this.x + this.vx, this.y + this.vy + this.sprite.frameHeight]
+
+        this.positionFeetRight = [this.x + this.vx + this.sprite.frameWidth, this.y + this.vy + this.sprite.frameHeight]
+    this.fountain.play()
+        this.fountain.volume = 0.5
+        //La propiedad volume solo admite 2 decimales
+        //Fuente (400,500)
+        //Si me muevo a la derecha y me alejo a partir de this.x 500, el sonido disminuye
+        if (this.movements.right && this.x > 500) {
+            this.fountain.volume = 0.10
+            //Si muevo a la izquierda y me acerco a la fuente (intervalo desde [500,ancho del canvas]), el sonido aumenta
+        } else if (this.movements.left && (this.x > 0 && this.x < 500)) {
+            this.fountain.volume=0.2
+        } else if (this.movements.right && (this.x < this.ctx.canvas.width && this.x > 500)) {
+            this.fountain.volume = 0.2
+        } else if(this.movements.left && this.x >500 ) {
+            this.fountain.volume = 0.1
+        } else if (this.movements.up && this.y < 600) {
+            this.fountain.volume = 0.1
+            //Si muevo a la izquierda y me acerco a la fuente (intervalo desde [500,ancho del canvas]), el sonido aumenta
+        } else if (this.movements.down && (this.y > 0 && this.y < 600)) {
+            this.fountain.volume = 0.2
+        } else if (this.movements.up && (this.y > this.ctx.canvas.height && this.x < 600)) {
+            this.fountain.volume = 0.2
+        } else if (this.movements.down && this.y > 600) {
+            this.fountain.volume = 0.1
+        }
+       // this.fountain.play()
+        // for (let i = 1; i > 0; i = (i - 0.02)*100/100) {
+        //     console.log("entro") 
+        //     // this.fountain.play()
+            
+        //     this.fountain.volume = i
+            
+        // }
+        //this.fountain.volume = 0.02
+      //  if ((this.x > 500 && this.y > 600 ) || (this.x < 500) && (this.y < 600)) {
+        //    console.log("entro")
+          //this.fountain.volume =1
+           // for (let i = 1; i <= 0; i = i - 0.02){
+               // this.fountain.play()
+             //  this.fountain.volume = i
+               // console.log(this.fountain.volume)
+           // }
+            
+       // }
 
     }
     checkColisionWall() {
         this.spritePosition()
         return wall.some(coordenate => {
             if (((this.positionFeetLeft[0] === coordenate[0]) && (this.positionFeetLeft[1] === coordenate[1])) || ((this.positionFeetRight[0] === coordenate[0]) && (this.positionFeetRight[1] === coordenate[1]))) {
-              return true
+                return true
             }
 
         })
     }
-    catchHorrocrux() {
-        
+    catchHorrocrux(element) {
+//Devuelve true o false
+        return this.x < element.x + element.width &&
+            this.x + this.width > element.x &&
+            this.y < element.y + element.height &&
+            this.y + this.height > element.y
+
     }
 }
 

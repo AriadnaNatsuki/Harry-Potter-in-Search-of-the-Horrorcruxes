@@ -6,8 +6,9 @@ class Horrocrux {
       this.position = position;
          //this.scale=0.5
        // this.isReady = false
-        this.width = this.ctx.canvas.width
-        this.height = this.ctx.canvas.height
+      //Establecemos tamaño de los horrocruxes a 40x40
+        this.width = 40
+        this.height = 40
         this.x = this.position[0]
         this.y = this.position[1]
       //  this.image.onload = () => {
@@ -19,7 +20,7 @@ class Horrocrux {
    // }
     draw() {
        // if (this.isReady()) {
-           this.ctx.drawImage(this.image, this.x, this.y,40,40)
+           this.ctx.drawImage(this.image, this.x, this.y,this.width,this.height)
       //  }
    }
 }

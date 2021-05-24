@@ -20,7 +20,7 @@ const HORROCRUXES = [
             src: './img/horrocruxes/diadem.png',
 
         }),
-        position: [120, 600]
+        position: [120, 500]
     },
     {
         name: "diary",
@@ -52,6 +52,6 @@ const HORROCRUXES = [
             src: './img/horrocruxes/ring.png',
 
         }),
-        position: [520, 20]
+        position: [500, 20]
     }
 ]

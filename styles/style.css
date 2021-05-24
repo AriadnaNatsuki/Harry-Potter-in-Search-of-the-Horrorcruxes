@@ -15,3 +15,54 @@ body{
     width: 32px;
     height: 32px;
 }
+#counter{
+    height: 140px;
+    width:240px;
+    background-color:grey;
+    margin-left:830px;
+    margin-top:20px;
+   padding-top: 5px;
+   padding-left:10px;
+    font-family:  Arial, sans-serif,  Harry Potter;
+     border: 10px inset silver;
+     /*border-radius:15px;*/
+    
+}
+#counter h1{
+       /*font-family: Harry Potter;*/
+    /*color:gold;*/
+  /*  padding-left: 30px*/
+
+}
+.horrocruxes{
+   display: flex;
+      /*display: inline-flex;*/
+    margin-top: 40 px;
+    justify-content: center;
+}
+.horrocruxes img :hover{
+  
+   /* visibility: visible;*/
+     
+}
+.horrocruxes img{
+    /*visibility: hidden;*/
+      height:40px;
+    width: 40px;
+}
+#continue{
+    width: 180px;
+    height: 30px;
+    background-color: gold;
+    color:black;
+    padding-left:40px;
+    margin-top: 50px;
+    margin-left:850px;
+   font-family: Harry Potter;
+  /*  border: 10px solid yellow;*/
+    border-radius:15px;
+}
+#continue:hover{
+    background-color: black;
+    color:white
+}

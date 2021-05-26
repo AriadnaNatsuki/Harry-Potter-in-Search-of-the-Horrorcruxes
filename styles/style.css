@@ -66,3 +66,32 @@ body{
     background-color: black;
     color:white
 }
+#Starting-Screen{
+    background-color: black;
+    font-family: Harry Potter;
+    font-size: 30px;
+    width: 959px;
+    height: 877px;
+     margin-left: 500px;
+    margin-top: 50px;
+    color:white;
+    text-align: center;
+    padding-top: 20px;
+      border-radius:15px;
+}
+.start-button{
+    background-color: white;
+    color: black;
+   
+    height: 300px;
+    width: 400px;
+    font-size: 100px;
+       border-radius:15px;
+       padding-top: 25px;
+       display: inline-block;
+       align-items: center;
+       margin-top: 70px;
+    }  
+    .start-button:hover{
+        background-color: gold;
+    }

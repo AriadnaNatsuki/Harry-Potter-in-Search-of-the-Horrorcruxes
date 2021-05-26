@@ -17,7 +17,7 @@ class Harry {
             left: false,
             up: false,
             down: false,
-            fire: false
+
         }
         // const fountain = new Audio('../sounds/fountain.wav')
         //this.sound = {
@@ -88,9 +88,15 @@ class Harry {
                 this.movements.down = status
                 break;
             case KEY_FIRE:
-                this.movements.fire = status
+                if (this.canFire) {
+                    console.log(this.canFire)
+                    this.balls.push(new Ball(this.ctx, this.x - this.width, this.y, './img/h-ball.png', true))
+                    this.canFire = false
+                    setTimeout(() => {
+                        this.canFire = true
+                    }, 500);
+                }
                 break;
-
         }
     }
     move() {
@@ -218,7 +224,7 @@ class Harry {
         this.positionFeetLeft = [this.x + this.vx, this.y + this.vy + this.sprite.frameHeight]
 
         this.positionFeetRight = [this.x + this.vx + this.sprite.frameWidth, this.y + this.vy + this.sprite.frameHeight]
-        this.fountain.play()
+      //  this.fountain.play()
         this.fountain.volume = 0.3
         //La propiedad volume solo admite 2 decimales
         //Fuente (400,500)

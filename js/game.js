@@ -3,11 +3,24 @@ class Game {
         this.canvas = document.getElementById(canvasId)
         this.ctx = this.canvas.getContext('2d')
         //Creamos atributo background, haciendo instancia de la clase Background
+        //ESCENARIOS
         this.background = new Background(this.ctx)
-        
-        this.harry = new Harry(this.ctx, 480, 400)
+        this.backgroundTwo = new BackgroundTwo(this.ctx)
+        this.forest = new Forest(this.ctx)
+        //ELEMENTOS ESCENARIOS
         this.horrocruxes = HORROCRUXES.map(
             horrocrux => new Horrocrux(this.ctx, horrocrux.name, horrocrux.image, horrocrux.position))
+        //SPRITES
+        //  this.harry = new Harry(this.ctx, 480, 400)
+        this.battleBool = false
+        if (this.battleBool) {
+            this.harry = new Harry(this.ctx, 480, 915)
+        } else {
+            this.harry = new Harry(this.ctx, 480, 400)
+        }
+
+        this.voldemort = new Voldemort(this.ctx, 100, 880)
+
         //  this.harry = new Harry(this.ctx,664,335)
         this.canvas.width = 877
         this.canvas.height = 959
@@ -15,6 +28,9 @@ class Game {
         this.FPS = 1000 / 60
         this.drawInterval = undefined
 
+
+
+        const battle = new Battle('canvas')
         //theme.addEventListener("canplay", event => {
         /* the audio is now playable; play it if permissions allow */
         // theme.play();
@@ -49,13 +65,36 @@ class Game {
 
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
     }
-    draw() {
-        this.background.draw()
-        this.harry.draw()
-        this.horrocruxes.forEach(element => element.draw())
+    draw(battleBool) {
+        if (battleBool) {
+            this.backgroundTwo.draw()
+            this.forest.draw()
+            this.voldemort.draw(
+                this.harry.draw()
+            )
+        } else {
+            this.background.draw()
+            this.harry.draw()
+            //  const blinking = setTimeout(() => {
+            //    if
+            this.horrocruxes.forEach(element => element.draw())
+            //  }, 5000)
 
-        //this.ctx.save()
+
+            //this.ctx.save()
+        }
+
     }
+    drawBlinking() {
+        //setTimeout(() => {
+        //  setInterval(() => {
+        //    this.horrocruxes.forEach(element => {
+        //      element.draw()
+        // }, 15)
+        //}, 5000)
+        //})
+    }
+
     onKeyEvent(event) {
         this.harry.onKeyEvent(event)
     }
@@ -85,9 +124,12 @@ class Game {
         if (this.horrocruxes.length - restHorrocruxes.length) {
             this.sounds.sparkling.play()
         }
-        if (restHorrocruxes.length ===2) {
+        if (restHorrocruxes.length === 4) {
+            //  let battleBool=true
             this.clear()
-            //  this.background.draw()
+            this.draw(true)
+            // this.save()
+            // this.battle.start()
         }
         // restHorrocruxes.forEach(document.querySelector('.horrocruxes #ring')
         this.horrocruxes = restHorrocruxes

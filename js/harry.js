@@ -1,36 +1,60 @@
 class Harry {
-    constructor(ctx, x, y) {
+    constructor(ctx, x, y, image, level2) {
         this.ctx = ctx
         this.x = x
         this.y = y
+        this.image = image
+        this.level2 = level2
         this.vx = 0
         this.vy = 0
         this.maxX = this.ctx.canvas.width
         this.maxY = this.ctx.canvas.height
         this.fountain = new Audio('./sounds/fountain.wav')
-
+        this.balls = []
         //this.width = 0
         //this.height=0
         //rgb(88,121,90) 
-        this.movements = {
-            right: false,
-            left: false,
-            up: false,
-            down: false,
+        if (this.level2) {
+            this.movements = {
+                up: false
+            }
+            this.isJumping = false
+            this.canFire = true
+            //Array de bolas de energia que se ira generando cuando se hagamos la instancia del objeto energyBalls
 
+
+        } else {
+            this.movements = {
+                right: false,
+                left: false,
+                up: false,
+                down: false,
+            }
         }
+
         // const fountain = new Audio('../sounds/fountain.wav')
         //this.sound = {
         //  fountain
         //}
-
         this.sprite = new Image()
-        this.sprite.src = './img/harry_walking.png'
+        this.sprite.src = image
+
+        // this.sprite.src = './img/harry_walking.png'
         this.sprite.isReady = false
-        //this.scale=0.5
-        //En horizontal tengo 9 sprites (9 columnas) y en vertical 2 (2 filas)
-        this.sprite.horizontalFrames = 9
-        this.sprite.verticalFrames = 2
+
+        if (this.level2) {
+            //this.scale=0.5
+            //En horizontal tengo 9 sprites (9 columnas) y en vertical 2 (2 filas)
+            this.sprite.horizontalFrames = 20
+            this.sprite.verticalFrames = 1
+
+        } else {
+            //this.scale=0.5
+            //En horizontal tengo 9 sprites (9 columnas) y en vertical 2 (2 filas)
+            this.sprite.horizontalFrames = 9
+            this.sprite.verticalFrames = 2
+        }
+
         //Posicion sprite por defecto al inicio del juego
         this.sprite.horizontalFrameIndex = 0
         this.sprite.verticalFrameIndex = 0
@@ -43,8 +67,14 @@ class Harry {
             //luego el alto entre el numero de sprite por fila, de esta manera lo sacamos en cuadriculas
             this.sprite.frameWidth = Math.floor(this.sprite.width / this.sprite.horizontalFrames)
             this.sprite.frameHeight = Math.floor(this.sprite.height / this.sprite.verticalFrames)
-            this.width = this.sprite.frameWidth
-            this.height = this.sprite.frameHeight
+            if (this.level2) {
+                this.width = this.sprite.frameWidth * 1.5
+                this.height = this.sprite.frameHeight * 1.5
+            } else {
+                this.width = this.sprite.frameWidth
+                this.height = this.sprite.frameHeight
+            }
+
 
         }
 
@@ -67,7 +97,11 @@ class Harry {
                 this.height
             )
         } this.sprite.drawCount++
+        this.balls.forEach(balls => balls.draw())
         this.animate()
+    }
+    clear() {
+        this.balls = this.balls.filter(ball => ball.x >= 130)
     }
     onKeyEvent(event) {
         const status = event.type === 'keydown'
@@ -93,8 +127,12 @@ class Harry {
                     this.balls.push(new Ball(this.ctx, this.x - this.width, this.y, './img/h-ball.png', true))
                     this.canFire = false
                     setTimeout(() => {
+                     
                         this.canFire = true
+                       
                     }, 500);
+                 
+
                 }
                 break;
         }
@@ -105,18 +143,33 @@ class Harry {
         //condicion que afecta a todas las sentencias
         //si el sprite toca por algun stio el color negro del laberinto se pare if (getImageData)
         //this.vx=0
+        if (this.canFire) {
+            if (this.movements.up && !this.isJumping) {
+             //   console.log(this.isJumping)
+                this.isJumping = true
+             //   console.log(this.isJumping)
+                this.vy = -8
+            } else if (this.isJumping) {
+                this.vy += GRAVITY
+            } else {
+                this.vx = 0
+                this.vy = 0
+            }
 
-        if (this.movements.right) {
-            this.vx = SPEED
-        } else if (this.movements.left) {
-            this.vx = -SPEED
-        } else if (this.movements.up) {
-            this.vy = -SPEED
-        } else if (this.movements.down) {
-            this.vy = SPEED
         } else {
-            this.vx = 0
-            this.vy = 0
+            if (this.movements.right) {
+                this.vx = SPEED
+            } else if (this.movements.left) {
+                this.vx = -SPEED
+            } else if (this.movements.up) {
+                this.vy = -SPEED
+            } else if (this.movements.down) {
+                this.vy = SPEED
+            } else {
+                this.vx = 0
+                this.vy = 0
+            }
+
         }
 
         if (this.checkColisionWall()) {
@@ -136,7 +189,11 @@ class Harry {
         }
         //Alto de 1 sprite (aprox 72)
         if (this.y >= this.maxY - this.sprite.frameHeight) {
-            this.y = this.maxY - this.sprite.frameHeight
+            this.isJumping = false
+            this.vy = 0
+           // this.y = this.maxY - this.sprite.frameHeight
+            this.y=900
+          
         } else if (this.y <= 0) {
             //this.y=0
             //He tenido que permitir que se le corte un poco la cabeza
@@ -145,32 +202,47 @@ class Harry {
 
             this.y = 0
         }
+        this.balls.forEach(balls => balls.move())
     }
     animate() {
-        if (this.movements.right) {
-            //  this.animateSprite("right")
-            this.sprite.verticalFrameIndex = 1
-            if ((this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
-                this.sprite.horizontalFrameIndex = 1
-            } else {
-                this.sprite.horizontalFrameIndex++
-            }
-
-            // this.animateSprite()
-        } else if (this.movements.left) {
+        /**if (this.canFire = false) {
             this.sprite.verticalFrameIndex = 0
+
+            // this.sprite.verticalFrameIndex = 0
             if ((this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
                 this.sprite.horizontalFrameIndex = 0
             } else {
                 this.sprite.horizontalFrameIndex++
             }
-        }
-        //  this.animateSprite()
-        else {
-            //this.resetAnimation()
-        }
+        }  */
+               if (this.movements.right) {
+                //  this.animateSprite("right")
+                this.sprite.verticalFrameIndex = 1
+                if ((this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
+                    this.sprite.horizontalFrameIndex = 1
+                } else {
+                    this.sprite.horizontalFrameIndex++
+                }
 
-    }
+                // this.animateSprite()
+            } else if (this.movements.left) {
+                this.sprite.verticalFrameIndex = 0
+                if ((this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
+                    this.sprite.horizontalFrameIndex = 0
+                } else {
+                    this.sprite.horizontalFrameIndex++
+                }
+            }
+            //  this.animateSprite()
+            else {
+                //this.resetAnimation()
+            }
+
+        }
+      
+         
+      
+    
     resetAnimation() {
         this.sprite.horizontalFrameIndex = 0
         this.sprite.verticalFrameIndex = 1
@@ -224,7 +296,7 @@ class Harry {
         this.positionFeetLeft = [this.x + this.vx, this.y + this.vy + this.sprite.frameHeight]
 
         this.positionFeetRight = [this.x + this.vx + this.sprite.frameWidth, this.y + this.vy + this.sprite.frameHeight]
-      //  this.fountain.play()
+        //  this.fountain.play()
         this.fountain.volume = 0.3
         //La propiedad volume solo admite 2 decimales
         //Fuente (400,500)
@@ -285,6 +357,15 @@ class Harry {
             this.y < element.y + element.height &&
             this.y + this.height > element.y
 
+    }
+    collidesWith(element) {
+        //  if (this.balls2.some(balls2 => {
+        return this.x < element.x + element.width &&
+            this.x+ this.width > element.x &&
+            this.y < element.y + element.height &&
+            this.y + this.height > element.y
+        //  })){
+        console.log("colision voldemort")
     }
 }
 

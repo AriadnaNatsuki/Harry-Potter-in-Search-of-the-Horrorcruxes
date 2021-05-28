@@ -6,7 +6,7 @@ class Ball {
         this.width = 20
         this.height = 20
         this.y = y
-        this.harry = true
+        this.harry = harry
         // this.maxY = maxY
         this.vy = SPEED
 

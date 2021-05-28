@@ -5,6 +5,7 @@ const KEY_LEFT = 37
 const KEY_FIRE = 32 //Barra espaciadora
 const SPEED = 1
 const MOVEMENT_FRAMES = 10
+const GRAVITY = 0.4
 const HORROCRUXES = [
     {
         name: "cup",

@@ -12,13 +12,9 @@ class Game {
             horrocrux => new Horrocrux(this.ctx, horrocrux.name, horrocrux.image, horrocrux.position))
         //SPRITES
         //  this.harry = new Harry(this.ctx, 480, 400)
-        this.battleBool = false
-        if (this.battleBool) {
-            this.harry = new Harry(this.ctx, 480, 915)
-        } else {
-            this.harry = new Harry(this.ctx, 480, 400)
-        }
-
+        //Le pasamos un booleano a Harry, ya que en funcion de si es true o false se deshabilitaran/habilitaran algunas opciones
+        this.harry = new Harry(this.ctx, 480, 400, './img/harry_walking.png' ,false)
+        this.harryBattle = new Harry(this.ctx, 480, 900, './img/prueba.png',true)
         this.voldemort = new Voldemort(this.ctx, 100, 880)
 
         //  this.harry = new Harry(this.ctx,664,335)
@@ -65,13 +61,13 @@ class Game {
 
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
     }
-    draw(battleBool) {
-        if (battleBool) {
+    draw(bool) {
+        if (bool) {
             this.backgroundTwo.draw()
             this.forest.draw()
-            this.voldemort.draw(
-                this.harry.draw()
-            )
+            this.voldemort.draw()
+            this.harryBattle.draw()
+            
         } else {
             this.background.draw()
             this.harry.draw()
@@ -97,10 +93,25 @@ class Game {
 
     onKeyEvent(event) {
         this.harry.onKeyEvent(event)
+        this.harryBattle.onKeyEvent(event)
     }
     move() {
         this.harry.move()
+        this.harryBattle.move()
+        this.voldemort.move()
     }
+    checkColission() {
+      //  this.harry.collidesWith()
+        //COLISION BOLAS DE HARRY CON VOLDEMORT
+            if (this.harryBattle.balls.some(ball => this.voldemort.collidesWith(ball))) {
+               console.log("colisione con voldemort")
+            }
+        //COLISION BOLAS DE VOLDEMORT CON HARRY
+            else if (this.voldemort.balls2.some(ball2 => this.harry.collidesWith(ball2))) {
+                console.log("colisione con harry")
+            }
+        }
+    
     checkCapture() {
         //  this.horrocruxes.forEach(horrocrux => {
 
@@ -124,10 +135,12 @@ class Game {
         if (this.horrocruxes.length - restHorrocruxes.length) {
             this.sounds.sparkling.play()
         }
-        if (restHorrocruxes.length === 4) {
-            //  let battleBool=true
+        if (restHorrocruxes.length === 6) {
+          
             this.clear()
             this.draw(true)
+            this.move(true)
+            this.checkColission()
             // this.save()
             // this.battle.start()
         }

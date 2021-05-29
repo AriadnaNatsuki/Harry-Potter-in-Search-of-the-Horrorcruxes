@@ -100,42 +100,53 @@ class Harry {
         this.balls.forEach(balls => balls.draw())
         this.animate()
     }
+    //Quedate con las bolas que estan del 130 en adelante
     clear() {
         this.balls = this.balls.filter(ball => ball.x >= 130)
     }
     onKeyEvent(event) {
         const status = event.type === 'keydown'
-        switch (event.keyCode) {
-            //Si presionamos la tecla UP esta obtendra valor keydown (true)
-            case KEY_RIGHT:
-                this.movements.right = status
-                // console.log("true right")
-                break;
-            case KEY_LEFT:
-                this.movements.left = status
-                //  console.log("true left")
-                break;
-            case KEY_UP:
-                this.movements.up = status
-                break;
-            case KEY_DOWN:
-                this.movements.down = status
-                break;
-            case KEY_FIRE:
-                if (this.canFire) {
-                    console.log(this.canFire)
-                    this.balls.push(new Ball(this.ctx, this.x - this.width, this.y, './img/h-ball.png', true))
-                    this.canFire = false
-                    setTimeout(() => {
-                     
-                        this.canFire = true
-                       
-                    }, 500);
-                 
+        if (this.level2) {
+            switch (event.keyCode) {
+                case KEY_FIRE:
+                    if (this.canFire) {
+                        console.log(this.canFire)
+                        this.balls.push(new Ball(this.ctx, this.x - this.width, this.y, './img/h-ball.png', true))
+                        this.canFire = false
+                        setTimeout(() => {
 
-                }
-                break;
+                            this.canFire = true
+
+                        }, 500);
+
+
+                    }
+                    break;
+            }
+        } else {
+            switch (event.keyCode) {
+                //Si presionamos la tecla UP esta obtendra valor keydown (true)
+
+                case KEY_RIGHT:
+                    //if(this.level2=false)
+                    this.movements.right = status
+                    // console.log("true right")
+                    break;
+                case KEY_LEFT:
+                    this.movements.left = status
+                    //  console.log("true left")
+                    break;
+                case KEY_UP:
+                    this.movements.up = status
+                    break;
+                case KEY_DOWN:
+                    this.movements.down = status
+                    break;
+            }
+
+
         }
+
     }
     move() {
 
@@ -145,9 +156,9 @@ class Harry {
         //this.vx=0
         if (this.canFire) {
             if (this.movements.up && !this.isJumping) {
-             //   console.log(this.isJumping)
+                //   console.log(this.isJumping)
                 this.isJumping = true
-             //   console.log(this.isJumping)
+                //   console.log(this.isJumping)
                 this.vy = -8
             } else if (this.isJumping) {
                 this.vy += GRAVITY
@@ -191,9 +202,9 @@ class Harry {
         if (this.y >= this.maxY - this.sprite.frameHeight) {
             this.isJumping = false
             this.vy = 0
-           // this.y = this.maxY - this.sprite.frameHeight
-            this.y=900
-          
+            // this.y = this.maxY - this.sprite.frameHeight
+            this.y = 900
+
         } else if (this.y <= 0) {
             //this.y=0
             //He tenido que permitir que se le corte un poco la cabeza
@@ -215,34 +226,34 @@ class Harry {
                 this.sprite.horizontalFrameIndex++
             }
         }  */
-               if (this.movements.right) {
-                //  this.animateSprite("right")
-                this.sprite.verticalFrameIndex = 1
-                if ((this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
-                    this.sprite.horizontalFrameIndex = 1
-                } else {
-                    this.sprite.horizontalFrameIndex++
-                }
-
-                // this.animateSprite()
-            } else if (this.movements.left) {
-                this.sprite.verticalFrameIndex = 0
-                if ((this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
-                    this.sprite.horizontalFrameIndex = 0
-                } else {
-                    this.sprite.horizontalFrameIndex++
-                }
-            }
-            //  this.animateSprite()
-            else {
-                //this.resetAnimation()
+        if (this.movements.right) {
+            //  this.animateSprite("right")
+            this.sprite.verticalFrameIndex = 1
+            if ((this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
+                this.sprite.horizontalFrameIndex = 1
+            } else {
+                this.sprite.horizontalFrameIndex++
             }
 
+            // this.animateSprite()
+        } else if (this.movements.left) {
+            this.sprite.verticalFrameIndex = 0
+            if ((this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
+                this.sprite.horizontalFrameIndex = 0
+            } else {
+                this.sprite.horizontalFrameIndex++
+            }
         }
-      
-         
-      
-    
+        //  this.animateSprite()
+        else {
+            //this.resetAnimation()
+        }
+
+    }
+
+
+
+
     resetAnimation() {
         this.sprite.horizontalFrameIndex = 0
         this.sprite.verticalFrameIndex = 1
@@ -361,7 +372,7 @@ class Harry {
     collidesWith(element) {
         //  if (this.balls2.some(balls2 => {
         return this.x < element.x + element.width &&
-            this.x+ this.width > element.x &&
+            this.x + this.width > element.x &&
             this.y < element.y + element.height &&
             this.y + this.height > element.y
         //  })){

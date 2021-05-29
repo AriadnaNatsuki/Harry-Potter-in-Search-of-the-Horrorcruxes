@@ -6,6 +6,8 @@ class Voldemort {
         this.width = 60
         this.height = 90
         this.livesVoldemort = []
+        this.lifes = 5
+
         //this.fountain = new Audio('./sounds/fountain.wav')
 
 
@@ -29,7 +31,7 @@ class Voldemort {
     isReady() {
         return this.sprite.isReady
     }
-    draw() {
+    draw(damage) {
         if (this.isReady()) {
             this.ctx.drawImage(this.sprite, this.VoldemortX,
                 this.VoldemortY,
@@ -37,18 +39,13 @@ class Voldemort {
                 this.height
             )
         }
-        this.balls2.push(new Ball(this.ctx, this.VoldemortX + this.width, this.VoldemortY, './img/v-ball.png', false))
-        setTimeout(() => {
-
-            this.balls2.forEach(balls2 => balls2.draw())
-            //   this.clear()
-        }, 6000)
-
+      
+        this.balls2.forEach(balls2 => balls2.draw())
         //Barra vida
         this.ctx.fillStyle = 'red'
         this.ctx.fillRect(10, 680, 154, 30)
         //Rectangulos de vida
-        for (let x = 0; x < 5; x++) {
+        for (let x = 0; x < this.lifes; x++) {
             //  for (let j = 0; j < array[i].length; j++){
             //let x = array[i]
             this.ctx.strokeStyle = 'red'
@@ -59,16 +56,18 @@ class Voldemort {
             this.ctx.fillRect(12 + 30 * x, 682, 30, 26)
             this.livesVoldemort.push(12 + 30 * x)
             //    }
-            /**   */
         }
+           
 
     }
     clear() {
         //Como pasar posicion Harry en tiempo real??
 
-        this.balls2 = this.balls2.filter(ball2 => ball2.x <= 100)
+        this.balls2 = this.balls2.filter(ball2 => ball2.x <= 480 )
     }
-    shoot() {
+    shoot() {//this.harryBattle.height
+        this.balls2.push(new Ball(this.ctx, this.VoldemortX + this.width, this.VoldemortY+15, './img/v-ball.png', false))
+        
         //   this.bullets.forEach(bullet => bullet.move())
     }
     move() {
@@ -77,13 +76,24 @@ class Voldemort {
     // this.square.collidesWith(pipe))) {
     collidesWith(element) {
         //  if (this.balls2.some(balls2 => {
-        return this.VoldemortX < element.x + element.width &&
+        if(this.VoldemortX < element.x + element.width &&
             this.VoldemortX + this.width > element.x &&
             this.VoldemortY < element.y + element.height &&
-            this.VoldemortY + this.height > element.y
+            this.VoldemortY + this.height > element.y) {
+              //  this.lifes--
+                console.log("colision voldemort")
+                return true
+            }
         //  })){
-        console.log("colision voldemort")
+       
     }
+    /* damage(damage) {
+         if (damage) {
+             for (let i = 0; i < 5; i--) {
+                 this.ctx.clearRect(this.voldemort.livesVoldemort[i], 682, 30, 26)
+             }
+         }
+     }*/
 
 }
 

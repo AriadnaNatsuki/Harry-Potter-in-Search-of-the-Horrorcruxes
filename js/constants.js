@@ -6,6 +6,8 @@ const KEY_FIRE = 32 //Barra espaciadora
 const SPEED = 1
 const MOVEMENT_FRAMES = 10
 const GRAVITY = 0.4
+//120 FRAMES => 60FRAMES/SEGUNDO => 120/60=2 SEGUNDOS
+const BALL_FRAMES=120
 const HORROCRUXES = [
     {
         name: "cup",

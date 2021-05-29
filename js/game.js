@@ -13,8 +13,8 @@ class Game {
         //SPRITES
         //  this.harry = new Harry(this.ctx, 480, 400)
         //Le pasamos un booleano a Harry, ya que en funcion de si es true o false se deshabilitaran/habilitaran algunas opciones
-        this.harry = new Harry(this.ctx, 480, 400, './img/harry_walking.png' ,false)
-        this.harryBattle = new Harry(this.ctx, 480, 900, './img/prueba.png',true)
+        this.harry = new Harry(this.ctx, 480, 400, './img/harry_walking.png', false)
+        this.harryBattle = new Harry(this.ctx, 480, 900, './img/prueba.png', true)
         this.voldemort = new Voldemort(this.ctx, 100, 880)
 
         //  this.harry = new Harry(this.ctx,664,335)
@@ -23,6 +23,8 @@ class Game {
         //Renderizacion
         this.FPS = 1000 / 60
         this.drawInterval = undefined
+        this.level = 1
+        this.voldemortBallsCount = 0
 
 
 
@@ -47,27 +49,45 @@ class Game {
 
         if (!this.drawInterval) {
             this.drawInterval = setInterval(() => {
-                //   this.sounds.theme.play()
-                this.clear()
-                this.move()
-                this.draw()
-                this.checkCapture()
-                this.sounds.theme.play()
-                //  this.sounds.fountain.play()
+                if (this.level === 1) {
+                    //   this.sounds.theme.play()
+                    this.clear()
+                    this.move()
+                    this.draw()
+                    this.checkCapture()
+                    this.sounds.theme.play()
+                    //  this.sounds.fountain.play()
+                } else {
+                    this.clear()
+                    this.draw(true)
+                    this.move()
+                    this.checkColission()
+                    this.voldemortBallsCount++
+                    if (this.voldemortBallsCount % BALL_FRAMES === 0) {
+                        this.voldemort.shoot()
+                        this.voldemortBallsCount = 0
+
+
+                    }
+                }
             }, this.FPS)
         }
     }
+
+
     clear() {
 
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
+        this.harryBattle.clear()
+        this.voldemort.clear()
     }
     draw(bool) {
         if (bool) {
             this.backgroundTwo.draw()
             this.forest.draw()
-            this.voldemort.draw()
+            this.voldemort.draw(bool)
             this.harryBattle.draw()
-            
+
         } else {
             this.background.draw()
             this.harry.draw()
@@ -101,17 +121,23 @@ class Game {
         this.voldemort.move()
     }
     checkColission() {
-      //  this.harry.collidesWith()
+        //  this.harry.collidesWith()
+        //   let bolaColisionadaVoldemort = this.harryBattle.balls.find(ball => this.voldemort.collidesWith(ball))
         //COLISION BOLAS DE HARRY CON VOLDEMORT
-            if (this.harryBattle.balls.some(ball => this.voldemort.collidesWith(ball))) {
-               console.log("colisione con voldemort")
-            }
-        //COLISION BOLAS DE VOLDEMORT CON HARRY
-            else if (this.voldemort.balls2.some(ball2 => this.harry.collidesWith(ball2))) {
-                console.log("colisione con harry")
-            }
+        if (this.harryBattle.balls.some(ball => this.voldemort.collidesWith(ball))) {
+            // this.voldemort.draw(true)
+            this.harryBattle.balls.filter(ball => !this.harryBattle.balls.find(ball => this.voldemort.collidesWith(ball)))
+            console.log("colisione con voldemort")
+            // for (let i = 0; i < 5; i--){
+            //   clearRect(this.voldemort.livesVoldemort[i], 682, 30, 26)
+            //}
         }
-    
+        //COLISION BOLAS DE VOLDEMORT CON HARRY
+        else if (this.voldemort.balls2.some(ball2 => this.harry.collidesWith(ball2))) {
+            console.log("colisione con harry")
+        }
+    }
+
     checkCapture() {
         //  this.horrocruxes.forEach(horrocrux => {
 
@@ -135,12 +161,10 @@ class Game {
         if (this.horrocruxes.length - restHorrocruxes.length) {
             this.sounds.sparkling.play()
         }
-        if (restHorrocruxes.length === 6) {
-          
+        if (restHorrocruxes.length === 5) {
+
             this.clear()
-            this.draw(true)
-            this.move(true)
-            this.checkColission()
+            this.level = 2
             // this.save()
             // this.battle.start()
         }

@@ -124,9 +124,14 @@ class Game {
         //  this.harry.collidesWith()
         //   let bolaColisionadaVoldemort = this.harryBattle.balls.find(ball => this.voldemort.collidesWith(ball))
         //COLISION BOLAS DE HARRY CON VOLDEMORT
+      
         if (this.harryBattle.balls.some(ball => this.voldemort.collidesWith(ball))) {
             // this.voldemort.draw(true)
-            this.harryBattle.balls.filter(ball => !this.harryBattle.balls.find(ball => this.voldemort.collidesWith(ball)))
+            //Quitamos la bola que esta impactando
+           
+           
+            this.harryBattle.balls.shift()
+            this.voldemort.lifes--
             console.log("colisione con voldemort")
             // for (let i = 0; i < 5; i--){
             //   clearRect(this.voldemort.livesVoldemort[i], 682, 30, 26)
@@ -161,7 +166,7 @@ class Game {
         if (this.horrocruxes.length - restHorrocruxes.length) {
             this.sounds.sparkling.play()
         }
-        if (restHorrocruxes.length === 5) {
+        if (restHorrocruxes.length === 6) {
 
             this.clear()
             this.level = 2

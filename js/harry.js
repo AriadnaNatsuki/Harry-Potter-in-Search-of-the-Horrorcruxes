@@ -102,7 +102,7 @@ class Harry {
     }
     //Quedate con las bolas que estan del 130 en adelante
     clear() {
-        this.balls = this.balls.filter(ball => ball.x >= 130)
+        //this.balls = this.balls.filter(ball => ball.x >= 130)
     }
     onKeyEvent(event) {
         const status = event.type === 'keydown'

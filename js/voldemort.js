@@ -63,7 +63,7 @@ class Voldemort {
     clear() {
         //Como pasar posicion Harry en tiempo real??
 
-        this.balls2 = this.balls2.filter(ball2 => ball2.x <= 480 )
+      //  this.balls2 = this.balls2.filter(ball2 => ball2.x <= 480 )
     }
     shoot() {//this.harryBattle.height
         this.balls2.push(new Ball(this.ctx, this.VoldemortX + this.width, this.VoldemortY+15, './img/v-ball.png', false))
@@ -81,7 +81,7 @@ class Voldemort {
             this.VoldemortY < element.y + element.height &&
             this.VoldemortY + this.height > element.y) {
               //  this.lifes--
-                console.log("colision voldemort")
+               // console.log("colision voldemort")
                 return true
             }
         //  })){

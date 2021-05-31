@@ -11,6 +11,8 @@ class Harry {
         this.maxY = this.ctx.canvas.height
         this.fountain = new Audio('./sounds/fountain.wav')
         this.balls = []
+        this.livesHarry = []
+        this.lives_H = 5
         //this.width = 0
         //this.height=0
         //rgb(88,121,90) 
@@ -84,6 +86,9 @@ class Harry {
     isReady() {
         return this.sprite.isReady
     }
+   // start() {
+     //   this.lives_H = 5
+   // }
     draw() {
         if (this.isReady()) {
             this.ctx.drawImage(this.sprite,
@@ -99,7 +104,29 @@ class Harry {
         } this.sprite.drawCount++
         this.balls.forEach(balls => balls.draw())
         this.animate()
+        if (this.level2) {
+            //Barra vida
+            this.ctx.fillStyle = 'black'
+            this.ctx.fillRect(400, 680, 154, 30)
+            //Rectangulos de vida
+            for (let x = 0; x < this.lives_H; x++) {
+                //  for (let j = 0; j < array[i].length; j++){
+                //let x = array[i]
+                this.ctx.strokeStyle = 'black'
+                this.ctx.beginPath()
+                this.ctx.strokeRect(402 + 30 * x, 682, 30, 26)
+                this.ctx.closePath()
+                this.ctx.fillStyle = '#fb3700'
+                this.ctx.fillRect(402 + 30 * x, 682, 30, 26)
+                this.livesHarry.push(402 + 30 * x)
+                //    }
+            }
+
+
+        }
+       
     }
+
     //Quedate con las bolas que estan del 130 en adelante
     clear() {
         //this.balls = this.balls.filter(ball => ball.x >= 130)
@@ -122,7 +149,11 @@ class Harry {
 
                     }
                     break;
+                case KEY_UP:
+                    this.movements.up = status
+                    break;
             }
+
         } else {
             switch (event.keyCode) {
                 //Si presionamos la tecla UP esta obtendra valor keydown (true)
@@ -159,7 +190,7 @@ class Harry {
                 //   console.log(this.isJumping)
                 this.isJumping = true
                 //   console.log(this.isJumping)
-                this.vy = -8
+                this.vy = -12
             } else if (this.isJumping) {
                 this.vy += GRAVITY
             } else {
@@ -227,31 +258,28 @@ class Harry {
             }
         }  */
         if (this.movements.right) {
+
             //  this.animateSprite("right")
             this.sprite.verticalFrameIndex = 1
+             if (this.sprite.drawCount % MOVEMENT_FRAMES === 0) {
             if ((this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
                 this.sprite.horizontalFrameIndex = 1
             } else {
                 this.sprite.horizontalFrameIndex++
-            }
-
+            }this.sprite.drawCount=0
+             }
             // this.animateSprite()
         } else if (this.movements.left) {
             this.sprite.verticalFrameIndex = 0
+            if (this.sprite.drawCount % MOVEMENT_FRAMES === 0) {
             if ((this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
                 this.sprite.horizontalFrameIndex = 0
             } else {
                 this.sprite.horizontalFrameIndex++
+                } this.sprite.drawCount = 0
             }
         }
-        //  this.animateSprite()
-        else {
-            //this.resetAnimation()
-        }
-
     }
-
-
 
 
     resetAnimation() {
@@ -279,19 +307,6 @@ class Harry {
     //  }
 
 
-    //} else if (this.movements.left) {
-    //Si incremento más de los sprites que tengo por fila, vuelve al inicio o si al recibir value derecha esta en otra columna
-    //o si empiezo a recorrerlo en la fila equivocada
-    //   if ((this.sprite.verticalFrameIndex != 0) || (this.sprite.horizontalFrameIndex >= this.sprite.horizontalFrames - 1)) {
-    //   this.sprite.horizontalFrameIndex = 0
-    //  } else {
-    //Recorro toda la fila
-    //  this.sprite.horizontalFrameIndex++
-    // }
-
-    // } this.drawCount = 0
-    //  }
-    // }
     /**sound() {
         if ((this.y > 250 || this.y < 350) && (this.x > 400 || this.y < 540)) {
             fountain.play()

@@ -19,10 +19,12 @@
 </head>
 
 <body>
+    <div class="panel">
     <div id="counter" style="display:none">
         <h1>Horrocruxes:
             <span>6</span>
         </h1>
+        
         <div class="horrocruxes">
             <img id="ring" src="./img/horrocruxes/ring.png">
             <img id="cup" src="./img/horrocruxes/cup.png">
@@ -31,7 +33,12 @@
             <img id="nagini" src="./img/horrocruxes/nagini.png">
             <img id="locket" src="./img/horrocruxes/locket.png">
         </div>
+    </div>   
     </div>
+ <!--   <div class="volume">
+        <img id="volumen-on" style="display:block" src="./img/speaker on.png">
+        <img id="volumen-off" style="display:none" src="./img/speaker off.jpg">
+    </div>-->
     <!--<div id="continue">
         <h1>BATTLE=></h1>
     </div>-->
@@ -41,6 +48,24 @@
         <div class="start-button">START<br> GAME</div>
     </div>
 
+    <div class="Ending-Screen" style="display:none">
+        <div class="win" style="display:none">YOU WIN! <br> You defeated the Dark Lord, <br>you deserve a rich
+            butterbeer!</div>
+        <div class="lose" style="display:none"><p>SORRY...YOU WAS THE LAST HORRCRUX</p></div>
+        <div class="buttons">
+          
+            <div class="linkedin-button">
+                <img src="./img/linkedin-logo.png" alt="Linkedin logo" width="50" height="50">
+            <input type="button" font-family="Verdana" font-weight=bold font-size="12px" size="30" style="color:black"
+                background-color="white"
+                onclick="window.location.href='https://www.linkedin.com/in/elizabeth-colastra-gómez-tejedor';" value="Find me">
+        </div>
+            <div class="restart">RESTART</div>
+            </div>
+
+       </div>
+      
+    </div>
     <canvas id="canvas" style="display: none" width="877" height="959"></canvas>
 
     <!--<script>-->

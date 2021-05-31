@@ -2,9 +2,9 @@ class Ball {
     constructor(ctx, x, y, image, harry) {
         this.ctx = ctx
         this.x = x
-        this.vx = SPEED * 3
-        this.width = 20
-        this.height = 20
+        this.vx = SPEED * 8
+        this.width = 50
+        this.height = 50
         this.y = y
         this.harry = harry
         // this.maxY = maxY

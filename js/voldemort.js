@@ -6,8 +6,7 @@ class Voldemort {
         this.width = 60
         this.height = 90
         this.livesVoldemort = []
-        this.lifes = 5
-
+        this.lives_V = 5
         //this.fountain = new Audio('./sounds/fountain.wav')
 
 
@@ -39,20 +38,22 @@ class Voldemort {
                 this.height
             )
         }
+     
+            this.balls2.forEach(balls2 => balls2.draw())
       
-        this.balls2.forEach(balls2 => balls2.draw())
+        
         //Barra vida
-        this.ctx.fillStyle = 'red'
+        this.ctx.fillStyle = 'black'
         this.ctx.fillRect(10, 680, 154, 30)
         //Rectangulos de vida
-        for (let x = 0; x < this.lifes; x++) {
+        for (let x = 0; x < this.lives_V; x++) {
             //  for (let j = 0; j < array[i].length; j++){
             //let x = array[i]
-            this.ctx.strokeStyle = 'red'
+            this.ctx.strokeStyle = 'black'
             this.ctx.beginPath()
             this.ctx.strokeRect(12 + 30 * x, 682, 30, 26)
             this.ctx.closePath()
-            this.ctx.fillStyle = 'black'
+            this.ctx.fillStyle = '#6BFF33'
             this.ctx.fillRect(12 + 30 * x, 682, 30, 26)
             this.livesVoldemort.push(12 + 30 * x)
             //    }
@@ -60,6 +61,7 @@ class Voldemort {
            
 
     }
+ 
     clear() {
         //Como pasar posicion Harry en tiempo real??
 
@@ -80,7 +82,7 @@ class Voldemort {
             this.VoldemortX + this.width > element.x &&
             this.VoldemortY < element.y + element.height &&
             this.VoldemortY + this.height > element.y) {
-              //  this.lifes--
+              //  this.lives_V--
                // console.log("colision voldemort")
                 return true
             }

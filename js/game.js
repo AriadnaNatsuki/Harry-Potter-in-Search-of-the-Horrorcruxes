@@ -10,6 +10,7 @@ class Game {
         //ELEMENTOS ESCENARIOS
         this.horrocruxes = HORROCRUXES.map(
             horrocrux => new Horrocrux(this.ctx, horrocrux.name, horrocrux.image, horrocrux.position))
+        this.horrocruxesCopy = [...this.horrocruxes]
         //SPRITES
         //  this.harry = new Harry(this.ctx, 480, 400)
         //Le pasamos un booleano a Harry, ya que en funcion de si es true o false se deshabilitaran/habilitaran algunas opciones
@@ -40,7 +41,8 @@ class Game {
             //    fountain: { audio: new Audio('./sounds/fountain.wav'), volume: fountain.volume = 0.2 },
             fountain: new Audio('./sounds/fountain.wav'),
 
-            sparkling: new Audio('./sounds/Sparkle.mp3')
+            sparkling: new Audio('./sounds/Sparkle.mp3'),
+            battle_: new Audio('./sounds/The-Prophet.mp3')
         }
         //fountain.volume=0.2
     }
@@ -49,15 +51,19 @@ class Game {
 
         if (!this.drawInterval) {
             this.drawInterval = setInterval(() => {
-                if (this.level === 1) {
-                    //   this.sounds.theme.play()
+           //     this.reset()
+                if (this.level ===1) {
+                this.sounds.theme.play()
                     this.clear()
                     this.move()
                     this.draw()
                     this.checkCapture()
-                    this.sounds.theme.play()
+                    this.sound()
+        
                     //  this.sounds.fountain.play()
                 } else {
+                this.sounds.theme.pause()
+                    this.sounds.battle_.play()
                     this.clear()
                     this.draw(true)
                     this.move()
@@ -69,12 +75,23 @@ class Game {
 
 
                     }
+                    this.checkLives()
                 }
             }, this.FPS)
         }
     }
+    reset() {
+      //  this.horrocruxesCopy = [...this.horrocruxes]
+     //   this.voldemort.lives_V = 5
+       // this.harryBattle.lives_H = 5
+}
 
+  /*      sound() {
+            if (this.level = 1) {
+                this.sounds.theme.play()
+            }
 
+        }*/
     clear() {
 
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
@@ -93,7 +110,7 @@ class Game {
             this.harry.draw()
             //  const blinking = setTimeout(() => {
             //    if
-            this.horrocruxes.forEach(element => element.draw())
+            this.horrocruxesCopy.forEach(element => element.draw())
             //  }, 5000)
 
 
@@ -124,25 +141,48 @@ class Game {
         //  this.harry.collidesWith()
         //   let bolaColisionadaVoldemort = this.harryBattle.balls.find(ball => this.voldemort.collidesWith(ball))
         //COLISION BOLAS DE HARRY CON VOLDEMORT
-      
+
         if (this.harryBattle.balls.some(ball => this.voldemort.collidesWith(ball))) {
             // this.voldemort.draw(true)
             //Quitamos la bola que esta impactando
-           
-           
+
+
             this.harryBattle.balls.shift()
-            this.voldemort.lifes--
+            this.voldemort.lives_V--
             console.log("colisione con voldemort")
             // for (let i = 0; i < 5; i--){
             //   clearRect(this.voldemort.livesVoldemort[i], 682, 30, 26)
             //}
-        }
-        //COLISION BOLAS DE VOLDEMORT CON HARRY
-        else if (this.voldemort.balls2.some(ball2 => this.harry.collidesWith(ball2))) {
+
+            //COLISION BOLAS DE VOLDEMORT CON HARRY
+        } else if (this.voldemort.balls2.some(ball => this.harryBattle.collidesWith(ball))) {
+            this.voldemort.balls2.shift()
+            this.harryBattle.lives_H--
             console.log("colisione con harry")
+
+        }
+
+
+    }
+    checkLives() {
+        const horrocruxesPanel = document.querySelector('#counter')
+        const CanvasAtribute = document.getElementById('canvas')
+        const endPanel = document.querySelector('.Ending-Screen')
+        const lose = document.querySelector('.lose')
+        const win = document.querySelector('.win')
+        if (this.voldemort.lives_V === 0) {
+            horrocruxesPanel.setAttribute('style', 'display:none')
+            CanvasAtribute.setAttribute('style', 'display:none')
+            endPanel.setAttribute('style', 'display:block')
+            win.setAttribute('style', 'display:block')
+        } else if (this.harryBattle.lives_H === 0) {
+            horrocruxesPanel.setAttribute('style', 'display:none')
+            CanvasAtribute.setAttribute('style', 'display:none')
+            endPanel.setAttribute('style', 'display:block')
+            lose.setAttribute('style', 'display:block')
+
         }
     }
-
     checkCapture() {
         //  this.horrocruxes.forEach(horrocrux => {
 
@@ -151,7 +191,7 @@ class Game {
         //   }
         //  })
         //Array con los horrocruxes pendientes de recoger
-        let restHorrocruxes = this.horrocruxes.filter(horrocrux => !this.harry.catchHorrocrux(horrocrux))
+        let restHorrocruxes = this.horrocruxesCopy.filter(horrocrux => !this.harry.catchHorrocrux(horrocrux))
         //let restHorrocruxes =5
 
 
@@ -163,7 +203,7 @@ class Game {
         //2: partimos de 6, recogemos 1, 6-1=5 (por ser distinto de 0, ya es truthy)
         //3: partimos de 5, si recogemos 1, 5-1=4 (por ser distinto de 0, ya es truthy)
         //Y así sucesivamente dependiendo de si cogemos  o no, será truthy o false la resta
-        if (this.horrocruxes.length - restHorrocruxes.length) {
+        if (this.horrocruxesCopy.length - restHorrocruxes.length) {
             this.sounds.sparkling.play()
         }
         if (restHorrocruxes.length === 6) {
@@ -174,7 +214,7 @@ class Game {
             // this.battle.start()
         }
         // restHorrocruxes.forEach(document.querySelector('.horrocruxes #ring')
-        this.horrocruxes = restHorrocruxes
+        this.horrocruxesCopy = restHorrocruxes
     }
 
 }

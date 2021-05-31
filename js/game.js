@@ -51,18 +51,18 @@ class Game {
 
         if (!this.drawInterval) {
             this.drawInterval = setInterval(() => {
-           //     this.reset()
-                if (this.level ===1) {
-                this.sounds.theme.play()
+                //     this.reset()
+                if (this.level === 1) {
+                    this.sounds.theme.play()
                     this.clear()
                     this.move()
                     this.draw()
                     this.checkCapture()
                     this.sound()
-        
+
                     //  this.sounds.fountain.play()
                 } else {
-                this.sounds.theme.pause()
+                    this.sounds.theme.pause()
                     this.sounds.battle_.play()
                     this.clear()
                     this.draw(true)
@@ -81,17 +81,17 @@ class Game {
         }
     }
     reset() {
-      //  this.horrocruxesCopy = [...this.horrocruxes]
-     //   this.voldemort.lives_V = 5
-       // this.harryBattle.lives_H = 5
-}
+        //  this.horrocruxesCopy = [...this.horrocruxes]
+        //   this.voldemort.lives_V = 5
+        // this.harryBattle.lives_H = 5
+    }
 
-  /*      sound() {
-            if (this.level = 1) {
-                this.sounds.theme.play()
-            }
-
-        }*/
+    /*      sound() {
+              if (this.level = 1) {
+                  this.sounds.theme.play()
+              }
+  
+          }*/
     clear() {
 
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
@@ -206,7 +206,7 @@ class Game {
         if (this.horrocruxesCopy.length - restHorrocruxes.length) {
             this.sounds.sparkling.play()
         }
-        if (restHorrocruxes.length === 6) {
+        if (restHorrocruxes.length === 0) {
 
             this.clear()
             this.level = 2
